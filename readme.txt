@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: me
+Contributors: eguaj
 Tags: flickr, image, photo, broken, unavailable, link, correct, fix
 Requires at least: 3.0.0
 Tested up to: 3.3.1
