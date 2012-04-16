@@ -31,7 +31,7 @@ function flickrelink_is_link_broken($url) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
 	$data = curl_exec($ch);
 	if (curl_errno($ch)) {
@@ -40,7 +40,7 @@ function flickrelink_is_link_broken($url) {
 	}
 
 	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	if ($code == 302 && preg_match('%^Location: .*photo_unavailable_.\.gif\r$%m', $data)) {
+	if ($code == 302 && preg_match('%^Location: .*photo_unavailable(_.)?\.gif\r$%m', $data)) {
 		curl_close($ch);
 		return true;
 	}
@@ -63,7 +63,7 @@ function flickrelink_get_photo_url($photo, $size) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 	$data = curl_exec($ch);
 	if (curl_errno($ch)) {
 		curl_close($ch);
@@ -72,7 +72,7 @@ function flickrelink_get_photo_url($photo, $size) {
 
 	if (preg_match('%<link\s+rel\s*=\s*"image_src"\s+href\s*=\s*"(?P<url>[^"]+)"%', $data, $m)) {
 		$url = $m['url'];
-		$url = preg_replace('%(.*_).(\.jpg)$%', sprintf('\1%s\2', $size), $url);
+		$url = preg_replace('%(.*?)(?:_.)?(\.jpg)$%', sprintf('\1%s\2', $size), $url);
 		return $url;
 	}
 	
@@ -141,7 +141,7 @@ function flickrelink_search_broken_links() {
 
 	echo sprintf("<p>Scanning %s posts for unavailable Flickr images...</p>", htmlspecialchars($_REQUEST['flickrelink_post_status']));
 
-	$imgRegex = '%<img[^>]*\s+src\s*=\s*"(?P<url>[^"]+(?P<host>farm\d+\.static\.flickr\.com|farm\d+\.staticflickr\.com)/\d+/(?P<photo>\d+)_(?P<hash>[a-f0-9]+)_(?P<size>.)\.jpg)%';
+	$imgRegex = '%<img[^>]*\s+src\s*=\s*"(?P<url>[^"]+(?P<host>farm\d+\.static\.flickr\.com|farm\d+\.staticflickr\.com)/\d+/(?P<photo>\d+)_(?P<hash>[a-f0-9]+)(?P<size>_.)?\.jpg)%';
 
 	$postList = get_posts(
 		array(

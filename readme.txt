@@ -3,7 +3,7 @@ Contributors: eguaj
 Tags: flickr, image, photo, broken, unavailable, link, correct, fix
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 Scan your posts to find and fix broken/unavailable Flickr photos.
 
@@ -30,6 +30,10 @@ e.g.
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 1.0.1 =
+* Corrected detection of images without size code
+* Raised curl timeout from 5 sec. to 15 sec.
 
 = 1.0.0 =
 * First release
