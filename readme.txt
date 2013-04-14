@@ -31,6 +31,10 @@ e.g.
 
 == Changelog ==
 
+= 1.0.2 =
+* Oops... SSL peer verification was disabled in previous versions. So, it's now
+  left enabled.
+
 = 1.0.1 =
 * Corrected detection of images without size code
 * Raised curl timeout from 5 sec. to 15 sec.
