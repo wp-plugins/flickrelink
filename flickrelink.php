@@ -1,13 +1,13 @@
 <?php
 /**
  * @package FlickRelink
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 /*
 Plugin Name: FlickRelink
 Description: Scan your posts to find and fix broken/unavailable Flickr photos.
-Version: 1.0.1
+Version: 1.0.2
 Author: Jérôme Augé
 Author URI: http://locallost.net/
 License: GPLv2 or later
