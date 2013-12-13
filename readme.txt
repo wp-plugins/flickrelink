@@ -2,7 +2,7 @@
 Contributors: eguaj
 Tags: flickr, image, photo, broken, unavailable, link, correct, fix
 Requires at least: 3.0.0
-Tested up to: 3.3.1
+Tested up to: 3.8
 Stable tag: 1.0.2
 
 Scan your posts to find and fix broken/unavailable Flickr photos.
