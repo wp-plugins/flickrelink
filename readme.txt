@@ -2,8 +2,8 @@
 Contributors: eguaj
 Tags: flickr, image, photo, broken, unavailable, link, correct, fix
 Requires at least: 3.0.0
-Tested up to: 3.8
-Stable tag: 1.0.2
+Tested up to: 4.2
+Stable tag: 1.0.3
 
 Scan your posts to find and fix broken/unavailable Flickr photos.
 
@@ -30,6 +30,9 @@ e.g.
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 1.0.3 =
+* Updated Flickr screen-scraping.
 
 = 1.0.2 =
 * Oops... SSL peer verification was disabled in previous versions. So, it's now

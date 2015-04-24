@@ -1,13 +1,13 @@
 <?php
 /**
  * @package FlickRelink
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 /*
 Plugin Name: FlickRelink
 Description: Scan your posts to find and fix broken/unavailable Flickr photos.
-Version: 1.0.2
+Version: 1.0.3
 Author: Jérôme Augé
 Author URI: http://locallost.net/
 License: GPLv2 or later
@@ -31,6 +31,7 @@ function flickrelink_is_link_broken($url) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+	curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
 
 	$data = curl_exec($ch);
 	if (curl_errno($ch)) {
@@ -39,7 +40,7 @@ function flickrelink_is_link_broken($url) {
 	}
 
 	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	if ($code == 302 && preg_match('%^Location: .*photo_unavailable(_.)?\.gif\r$%m', $data)) {
+	if ($code == 302 && preg_match('%^Location: .*photo_unavailable(_.)?\.(gif|png)\r$%m', $data)) {
 		curl_close($ch);
 		return true;
 	}
@@ -63,18 +64,21 @@ function flickrelink_get_photo_url($photo, $size) {
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+	curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
 	$data = curl_exec($ch);
 	if (curl_errno($ch)) {
 		curl_close($ch);
 		return null;
 	}
 
-	if (preg_match('%<link\s+rel\s*=\s*"image_src"\s+href\s*=\s*"(?P<url>[^"]+)"%', $data, $m)) {
+	if (preg_match('%<meta\s+property\s*=\s*"og:image"\s*content\s*=\s*"(?P<url>[^"]+)"%', $data, $m)) {
 		$url = $m['url'];
-		$url = preg_replace('%(.*?)(?:_.)?(\.jpg)$%', sprintf('\1%s\2', $size), $url);
+		if ($size != '') {
+			$url = preg_replace('%(.*?)(?:_.)?(\.jpg)$%', sprintf('\1%s\2', $size), $url);
+		}
 		return $url;
 	}
-	
+
 	return null;
 }
 
